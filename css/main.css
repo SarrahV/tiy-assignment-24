@@ -1,0 +1,93 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'PT Sans Narrow', sans-serif;
+}
+header {
+  background: #343d46;
+}
+header .top-nav {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  list-style-type: none;
+}
+header .top-nav li {
+  display: inline;
+  margin: 0 20px 0 0;
+}
+header .search-box {
+  margin: 0;
+  width: 300px;
+  height: 50px;
+}
+header .container-1 {
+  width: 300px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+}
+header .container-1 input#search {
+  width: 300px;
+  height: 50px;
+  background: #2b303b;
+  border: none;
+  font-size: 10pt;
+  float: left;
+  color: #63717f;
+  padding-left: 45px;
+  -webkit-transition: background .55s ease;
+  -moz-transition: background .55s ease;
+  -ms-transition: background .55s ease;
+  -o-transition: background .55s ease;
+  transition: background .55s ease;
+}
+header .container-1 input#search:hover,
+header .container-1 .container-1 input#search:focus,
+header .container-1 .container-1 input#search:active {
+  outline: none;
+  background: #ffffff;
+}
+header .container-1 .icon {
+  position: absolute;
+  top: 50%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+}
+header .container-1 input#search::-webkit-input-placeholder {
+  color: #65737e;
+}
+header .container-1 input#search::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #65737e;
+}
+header .container-1 input#search:-ms-input-placeholder {
+  color: #65737e;
+}
+.wrapper {
+  clear: both;
+}
+.playlist {
+  float: left;
+  width: 25%;
+  padding-bottom: 25%;
+  background-image: url(../img/rock.jpg);
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  color: #FFF;
+  position: relative;
+}
+.innerContent {
+  text-align: center;
+  position: absolute;
+  right: 40%;
+  top: 35%;
+  font-family: 'Oxygen', sans-serif;
+}
