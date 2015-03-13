@@ -1,27 +1,33 @@
-var InitialView = Backbone.View.extend({
+var InitialView = Backbone.View.extend({ //homepage view
 
   template: JST["playlists"],
 
-  events: {
+  events: {    // adds event to the a tags in playlist class
 
-    //will need an onClick for playlist
+    "click .playlist a" : "onClick"
 
   },
 
   initialize: function() {
-
-    //will need to listen for the onClick?
+    this.render();
   },
 
-  render: function() {
+  render: function() {               // renders playlist boxes to page
     this.$el.html(this.template() );
     return this;
-  }
+  },
+
+  onClick: function(e) {            // grabs genre data when clicked
+    e.preventDefault();
+    var $link = this.$(e.currentTarget);
+    var genre = $link.data("genre");
+    this.trigger("link:click", genre);
+  }                                  
 
 });
 
 
-var TrackView = Backbone.View.extend({
+var TrackView = Backbone.View.extend({  // ind track view
 
   tagname: "tr",
 
@@ -53,7 +59,7 @@ var TrackView = Backbone.View.extend({
   },
 
   loading: function() {
-    this.reoveClasses();
+    this.removeClasses();
     this.$("i").addClass(this.spinClass).addClass(this.loadingClass);
   },
 
@@ -128,10 +134,37 @@ var TrackView = Backbone.View.extend({
 
 });
 
-var TrackCollectionView = Backbone.View.extend({
+var TrackCollectionView = Backbone.View.extend({ //displays when you click on initial view box
+
+  tagName: "table",
+
+  className: "track-list",
+
+  template: JST["track_collection"],
+
+  initialize: function() {
+    this.listenTo(this.collection, "reset", function() {
+      this.render();
+    });
+  },
+
+  render: function() {
+    this.$el.html( this.template() );
+    $tbody = this.$("tbody");
+    this.collection.each(function(model) {
+      var view = new TrackView({model: model});
+      $tbody.append(view.render().el);
+    });
+    return this;
+  }
 
 });
+ 
 
-var GenreSelectionView = Backbone.View.extend({
 
-});
+
+
+
+
+
+
