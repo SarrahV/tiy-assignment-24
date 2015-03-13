@@ -70,7 +70,14 @@ gulp.task("bower:assets:js", function() {
 
   // make sure backbone is last in list
   sorted = _.sortBy(files, function(path) {
-    return path.match(/backbone\.js/) ? 1 : 0;
+    if (path.match(/backbonefire\.js/)) {
+      return 2;
+    } 
+    if (path.match(/backbone\.js/)) {
+      return 1;
+    }
+
+    return 0;
   });
 
   gulp.src(sorted)
