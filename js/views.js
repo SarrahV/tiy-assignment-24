@@ -22,9 +22,10 @@ var InitialView = Backbone.View.extend({ //homepage view
     var $link = this.$(e.currentTarget);
     var genre = $link.data("genre");
     this.trigger("link:click", genre);
-  }                                  
+  },                              
 
 });
+
 
 
 var TrackView = Backbone.View.extend({  // ind track view
@@ -34,13 +35,16 @@ var TrackView = Backbone.View.extend({  // ind track view
   template: JST["track"],
 
   events: {
-    "click .play i" : "onButtonClick"
+    "click .play i"      : "onButtonClick",
+    "click .fa.fa-star"  : "onClick",
   },
 
   playClass     : "fa-play-circle",
   loadingClass  : "fa-spinner",
   pauseClass    : "fa-pause",
-  spinClass     : "fa-spin", 
+  spinClass     : "fa-spin",
+  favClass      : "fa-star", 
+
 
   initialize: function() {
 
@@ -79,6 +83,10 @@ var TrackView = Backbone.View.extend({  // ind track view
     this.$("i").addClass(this.playClass);
   },
 
+  /*favorite: function() { // not right!!
+    this.$("i").addClass(this.favClass);
+  },*/
+
   updatePosition: function() {
     var duration = this.model.stream.duration;
     var position = this.model.stream.position;
@@ -104,6 +112,17 @@ var TrackView = Backbone.View.extend({  // ind track view
     else if ( $btn.hasClass(this.pauseClass) ) {
       this.model.pause();
     }
+  },
+
+  onClick: function(e) { //onClick function to add starred to fav
+    e.preventDefault();
+
+    $a = $(e.currentTarget);
+
+
+    //need to add to a favorites playlist if one exists
+    //create new one if there is no favorites list
+
   },
 
   formatDuration: function(duration) {
@@ -141,6 +160,32 @@ var TrackCollectionView = Backbone.View.extend({ //displays when you click on in
   className: "track-list",
 
   template: JST["track_collection"],
+
+  initialize: function() {
+    this.listenTo(this.collection, "reset", function() {
+      this.render();
+    });
+  },
+
+  render: function() {
+    this.$el.html( this.template() );
+    $tbody = this.$("tbody");
+    this.collection.each(function(model) {
+      var view = new TrackView({model: model});
+      $tbody.append(view.render().el);
+    });
+    return this;
+  }
+
+});
+
+var FavoritesView = Backbone.View.extend({
+
+  tagName: "table",
+
+  className: "track-list",
+
+  template: JST["favorites"],
 
   initialize: function() {
     this.listenTo(this.collection, "reset", function() {
