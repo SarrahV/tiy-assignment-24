@@ -1,23 +1,23 @@
 var Router = Backbone.Router.extend({
 
   routes: {
-    ""              : "showHome",  //Initial View
+    ""              : "showHome",   // Initial View
     "tracks/:genre" : "loadGenre",  //TracksCollectionView
     /*"favorites"     : "showFavorites"*/
   },
 
   initialize: function() {
-    this.initialView = new InitialView(); //view on homepage
+    this.initialView = new InitialView();       //view on homepage
     this.nav = new NavView();      
     this.tracks = new TrackCollection();        // reg tracks
-    this.tracksView = new TrackCollectionView({ //view of tracks Collec.
+    this.tracksView = new TrackCollectionView({ // view of tracks Collec.
       collection: this.tracks
     });
-    this.favTracks = new FireCollection();       //  firebase tracks
-    this.favoritesView = new FavoritesView({     // view of firebase Collec.
-      collection: this.favTracks
-    });
-    this.currentView = null;                     //allows me to detect a view and detach it
+    //this.favTracks = new FireCollection();      // firebase tracks
+    //this.favoritesView = new FavoritesView({    // view of firebase Collec.
+    //   collection: this.favTracks
+    // });
+    this.currentView = null;                    // allows me to detect a view and detach it
    
  
     $("header").append(this.nav.render().el);
@@ -53,7 +53,7 @@ var Router = Backbone.Router.extend({
     });
 
     // default to showing home
-    this.showHome();
+    //this.showHome(); //this makes the navigate on tracks not work
 
   },
 
@@ -74,9 +74,9 @@ var Router = Backbone.Router.extend({
       this.$(".wrapper").html( this.initialView.render().el );
     },
     // grabs id of favorited tracks, adds to favorites
-   /* loadFavs: function(id) {
-      this.favTracks.loadFavs(id);
-    }*/
+    // loadFavs: function(id) {
+    //   this.favTracks.loadFavs(id);
+    // }
 
 });
 

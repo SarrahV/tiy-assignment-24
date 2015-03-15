@@ -52,8 +52,6 @@ var InitialView = Backbone.View.extend({ //homepage view
 
 var TrackView = Backbone.View.extend({  // ind track view
 
-  tagname: "tr",
-
   template: JST["track"],
 
   events: {
@@ -123,7 +121,7 @@ var TrackView = Backbone.View.extend({  // ind track view
     }
   },
 
-  /*onClick: function(e) { //onClick function to add fav class to track
+  onClick: function(e) { //onClick function to add fav class to track
     e.preventDefault();
 
     $a = $(e.currentTarget);
@@ -134,7 +132,7 @@ var TrackView = Backbone.View.extend({  // ind track view
     var id = $a.data("id"); // grab the id data from object
     this.trigger("add:fav", id);  //add id to fav
 
-  },*/
+  },
 
   formatDuration: function(duration) {
     // convert miliseconds to minutes
@@ -166,8 +164,6 @@ var TrackView = Backbone.View.extend({  // ind track view
 
 var TrackCollectionView = Backbone.View.extend({ //displays when you click on initial view box
 
-  tagName: "table",
-
   className: "track-list",
 
   template: JST["track_collection"],
@@ -180,41 +176,39 @@ var TrackCollectionView = Backbone.View.extend({ //displays when you click on in
 
   render: function() {
     this.$el.html( this.template() );
-    $tbody = this.$("tbody");
+    $div = this.$("div");
     this.collection.each(function(model) {
       var view = new TrackView({model: model});
-      $tbody.append(view.render().el);
+      $div.append(view.render().el);
     });
     return this;
   }
 
 });
 
-var FavoritesView = Backbone.View.extend({
+// var FavoritesView = Backbone.View.extend({
 
-  tagName: "table",
+//   className: "track-list",
 
-  className: "track-list",
+//   template: JST["favorites"],
 
-  template: JST["favorites"],
+//   initialize: function() { // listen for changes to the view (add track)
+//     this.listenTo(this.collection, "change", function() {
+//       this.render();
+//     });
+//   },
 
-  initialize: function() { // listen for changes to the view (add track)
-    this.listenTo(this.collection, "change", function() {
-      this.render();
-    });
-  },
+//   render: function() {
+//     this.$el.html( this.template() );
+//     $div = this.$("div");
+//     this.collection.each(function(model) {
+//       var view = new FavoritesView({model: model});
+//       $div.append(view.render().el);
+//     });
+//     return this;
+//   }
 
-  render: function() {
-    this.$el.html( this.template() );
-    $tbody = this.$("tbody");
-    this.collection.each(function(model) {
-      var view = new FavoritesView({model: model});
-      $tbody.append(view.render().el);
-    });
-    return this;
-  }
-
-});
+// });
 
 
 

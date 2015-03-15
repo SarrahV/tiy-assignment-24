@@ -1,22 +1,20 @@
-<td class="artwork">
-  <img src="{{artwork_url}}" alt="{{title}}">
-</td>
-<td class="play">
-  {{#if streamable}}
-  <i class="fa fa-play-circle"></i>
-  {{else}}
-  <i class="fa fa-ban"></i>
-  {{/if}}
-</td>
-<td class="title">
-  <span>{{title}}</td>
-</td>
-<td class="genre">
-  <span>{{genre}}</td>
-</td>
-<td class="duration">
-  <span>{{duration}}</span>
-</td>
-<td>
-  <a href="#" data-id={{id}}><i class="fa fa-star"></i></a>
-</td>
+  <div class="track-box">
+    <div class="artwork">
+      <img src="{{artwork_url}}" alt="{{title}}">
+    </div>
+    <div class="genre">
+      <p>Playlist: {{genre}}</p>
+    </div>
+      <h2 class="title">{{title}} . <span>{{duration}}</span></h2>
+    <div class="favs">
+      <a href="#" data-id={{id}}><i class="fa fa-star"></i></a>
+    </div>
+    <div class="play">
+      {{#if streamable}}
+      <i class="fa fa-play-circle"></i>
+      {{else}}
+      <i class="fa fa-ban"></i>
+      {{/if}}
+    </div>
+  </div>
+
