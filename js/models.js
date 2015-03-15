@@ -1,10 +1,40 @@
 var Fire = Backbone.Model.extend({
 
+  play: function() {
+    if(!this.stream) {
+      this._loadStream();
+      return;
+    }
+    this.stream.play();
+    this.trigger("stream:play");
+  },
+
+  pause: function() {
+    this.stream.pause();
+    this.trigger("stream:pause");
+  },
+
+  _loadStream: function(autoPlay) {
+    this.trigger("stream:loading");
+    SC.stream("/tracks/" + this.id, function(sound){
+      this.stream = sound;
+      this.trigger("stream:loaded");
+      this.play();
+    }.bind(this));
+  }
+
 });
 
 var FireCollection = Backbone.Firebase.Collection.extend({
-  url: "https://playlist-soundzzzz-sv.firebaseio.com",
-  model: Fire
+  url: "https://playlist-soundzzzz.firebaseio.com",
+  model: Fire,
+
+  loadFavs: function(genre) {
+    SC.get('/tracks', { id: id }, function(tracks) {
+      this.reset(tracks);
+    }.bind(this));
+  },
+
 });
 
 var Track = Backbone.Model.extend({

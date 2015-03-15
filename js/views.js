@@ -36,14 +36,13 @@ var TrackView = Backbone.View.extend({  // ind track view
 
   events: {
     "click .play i"      : "onButtonClick",
-    "click .fa.fa-star"  : "onClick",
+    "click a"            : "onClick",
   },
 
   playClass     : "fa-play-circle",
   loadingClass  : "fa-spinner",
   pauseClass    : "fa-pause",
   spinClass     : "fa-spin",
-  favClass      : "fa-star", 
 
 
   initialize: function() {
@@ -83,10 +82,6 @@ var TrackView = Backbone.View.extend({  // ind track view
     this.$("i").addClass(this.playClass);
   },
 
-  /*favorite: function() { // not right!!
-    this.$("i").addClass(this.favClass);
-  },*/
-
   updatePosition: function() {
     var duration = this.model.stream.duration;
     var position = this.model.stream.position;
@@ -114,14 +109,16 @@ var TrackView = Backbone.View.extend({  // ind track view
     }
   },
 
-  onClick: function(e) { //onClick function to add starred to fav
+  onClick: function(e) { //onClick function to add fav class to track
     e.preventDefault();
 
     $a = $(e.currentTarget);
 
-
-    //need to add to a favorites playlist if one exists
-    //create new one if there is no favorites list
+    if ( ! $a.hasClass(this.favClass) ) { //if it does not have a favClass, add it
+       this.addClass(favClass);
+    }
+    var id = $a.data("id"); // grab the id data from object
+    this.trigger("add:fav", id);  //add id to fav
 
   },
 
@@ -187,8 +184,8 @@ var FavoritesView = Backbone.View.extend({
 
   template: JST["favorites"],
 
-  initialize: function() {
-    this.listenTo(this.collection, "reset", function() {
+  initialize: function() { // listen for changes to the view (add track)
+    this.listenTo(this.collection, "change", function() {
       this.render();
     });
   },
@@ -197,14 +194,13 @@ var FavoritesView = Backbone.View.extend({
     this.$el.html( this.template() );
     $tbody = this.$("tbody");
     this.collection.each(function(model) {
-      var view = new TrackView({model: model});
+      var view = new FavoritesView({model: model});
       $tbody.append(view.render().el);
     });
     return this;
   }
 
 });
- 
 
 
 
