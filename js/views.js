@@ -4,7 +4,7 @@ var InitialView = Backbone.View.extend({ //homepage view
 
   events: {    // adds event to the a tags in playlist class
 
-    "click .playlist a" : "onClick"
+    "click .link-box a" : "onClick"
 
   },
 
@@ -26,6 +26,28 @@ var InitialView = Backbone.View.extend({ //homepage view
 
 });
 
+ var NavView = Backbone.View.extend({
+  events: {
+    "click a" : "onClick"
+  },
+  template: JST["nav"],
+  render: function() {
+    this.$el.html(this.template());
+    return this;
+  },
+
+  onClick: function(e) {
+    e.preventDefault();
+    $link = this.$(e.currentTarget);
+    var name = $link.data("name");
+    var href = $link.attr("href");
+    this.trigger("link:click", { 
+      name: name,
+      href: href
+    });
+  }
+});
+
 
 
 var TrackView = Backbone.View.extend({  // ind track view
@@ -40,14 +62,12 @@ var TrackView = Backbone.View.extend({  // ind track view
   },
 
   playClass     : "fa-play-circle",
-  loadingClass  : "fa-spinner",
   pauseClass    : "fa-pause",
-  spinClass     : "fa-spin",
+ 
 
 
   initialize: function() {
 
-    this.listenTo(this.model, "stream:loading", this.loading);
     this.listenTo(this.model, "stream:play",    this.playing);
     this.listenTo(this.model, "stream:pause",   this.paused);
 
@@ -56,15 +76,9 @@ var TrackView = Backbone.View.extend({  // ind track view
   removeClasses: function() {
     $i = this.$("i");
     $i.removeClass(this.playClass);
-    $i.removeClass(this.loadingClass);
     $i.removeClass(this.pauseClass);
-    $i.removeClass(this.spinClass);
   },
 
-  loading: function() {
-    this.removeClasses();
-    this.$("i").addClass(this.spinClass).addClass(this.loadingClass);
-  },
 
   playing: function() {
     this.removeClasses();
@@ -109,7 +123,7 @@ var TrackView = Backbone.View.extend({  // ind track view
     }
   },
 
-  onClick: function(e) { //onClick function to add fav class to track
+  /*onClick: function(e) { //onClick function to add fav class to track
     e.preventDefault();
 
     $a = $(e.currentTarget);
@@ -120,7 +134,7 @@ var TrackView = Backbone.View.extend({  // ind track view
     var id = $a.data("id"); // grab the id data from object
     this.trigger("add:fav", id);  //add id to fav
 
-  },
+  },*/
 
   formatDuration: function(duration) {
     // convert miliseconds to minutes
