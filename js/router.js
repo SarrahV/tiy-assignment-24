@@ -1,22 +1,26 @@
 var Router = Backbone.Router.extend({
 
   routes: {
-    ""                      : "showHome",   // Initial View
-    "tracks/:genre"         : "loadGenre",  //TracksCollectionView
-    "tracks/:favorites"     : "showFavorites"
+    ""                      : "showHome",        // Initial View
+    "tracks/:genre"         : "loadGenre",      //TracksCollectionView
+    "tracks/:title"         : "showFavorites"   //Fav TracksCollectionView
   },
 
   initialize: function() {
     this.initialView = new InitialView();       //view on homepage
+    
     this.nav = new NavView();      
+    
     this.tracks = new TrackCollection();        // reg tracks
     this.tracksView = new TrackCollectionView({ // view of tracks Collec.
       collection: this.tracks
     });
-    //this.favTracks = new FireCollection();      // firebase tracks
-    //this.favoritesView = new FavoritesView({    // view of firebase Collec.
-    //   collection: this.favTracks
-    // });
+
+    this.favTracks = new FireCollection();      // firebase tracks
+    this.favoritesView = new FavoritesView({    // view of firebase Collec.
+      collection: this.favTracks
+    });
+
     this.currentView = null;                    // allows me to detect a view and detach it
    
  
@@ -24,16 +28,21 @@ var Router = Backbone.Router.extend({
 
     //listens for click on initial view
     this.listenTo(this.initialView, "link:click", function(genre){ 
-      console.log('click in initial view');
+
       this.loadGenre(genre);
+      console.log(this);
       this.navigate("tracks/" + genre);
       this.showTracksView();
     });
 
-    /*listens for click on track view, add song id to favorites
-    this.listenTo(this.tracksView, "link:click", function(id) {
-      this.loadFavs(id);
-    });*/
+     //listens for click on Fav view
+    this.listenTo(this.nav, "link:click", function(title){ 
+     
+      this.showFavorites(title);
+      console.log(this);
+      this.navigate("tracks/" + title);
+      //this.showFavorites();
+    });
 
 
     //listens to navigation to show pages
@@ -73,11 +82,16 @@ var Router = Backbone.Router.extend({
       }
       this.currentView = this.initialView; //adds in our new view
       $(".wrapper").html(this.currentView.el);
+    },
+
+    showFavorites: function(title) {
+      if(this.currentView){     // checks for currentView
+          this.currentView.$el.detach(); //detaches what it finds
+      }
+      this.currentView = this.favoritesView; //adds in our new view
+      $(".wrapper").html(this.currentView.el);
     }
-    // grabs id of favorited tracks, adds to favorites
-    // loadFavs: function(id) {
-    //   this.favTracks.loadFavs(id);
-    // }
+
 
 });
 
