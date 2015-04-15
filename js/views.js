@@ -55,12 +55,14 @@ var TrackView = Backbone.View.extend({  // ind track view
   template: JST["track"],
 
   events: {
+    "click .favs a"      : "onFavClick",
     "click .play i"      : "onButtonClick",
-    "click a"            : "onClick",
   },
 
   playClass     : "fa-play-circle",
   pauseClass    : "fa-pause",
+  favClass      : "fa-star-o",
+  isFavClass    : "fa-star",
  
 
 
@@ -72,26 +74,25 @@ var TrackView = Backbone.View.extend({  // ind track view
   }, 
 
   removeClasses: function() {
-    $i = this.$("i");
+    $i = this.$(".play i");
     $i.removeClass(this.playClass);
     $i.removeClass(this.pauseClass);
   },
 
-
   playing: function() {
     this.removeClasses();
     this.interval = setInterval(this.updatePosition.bind(this), 1000);
-    this.$("i").addClass(this.pauseClass);
+    this.$(".play i").addClass(this.pauseClass);
   },
 
   paused: function() {
     this.removeClasses();
-    this.$("i").addClass(this.playClass);
+    this.$(".play i").addClass(this.playClass);
   },
 
   finished: function() {
     this.removeClasses();
-    this.$("i").addClass(this.playClass);
+    this.$(".play i").addClass(this.playClass);
   },
 
   updatePosition: function() {
@@ -121,16 +122,24 @@ var TrackView = Backbone.View.extend({  // ind track view
     }
   },
 
-  onClick: function(e) { //onClick function to add fav class to track
+  onFavClick: function(e) { //onClick function to add fav class to track
     e.preventDefault();
 
     $a = $(e.currentTarget);
+    $i = $("i", $a);
 
-    if ( ! $a.hasClass(this.favClass) ) { //if it does not have a favClass, add it
-       this.addClass(favClass);
+    if ( $i.hasClass(this.favClass) ) { //if it does not have a favClass, add it
+      $i.removeClass(this.favClass);
+      $i.addClass(this.isFavClass);
+    } else if ($i.hasClass(this.isFavClass) ) {
+      $i.removeClass(this.isFavClass);
+      $i.addClass(this.favClass);
     }
+
     var id = $a.data("id"); // grab the id data from object
     this.trigger("add:fav", id);  //add id to fav
+
+    console.log(id);
 
   },
 

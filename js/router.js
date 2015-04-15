@@ -1,9 +1,9 @@
 var Router = Backbone.Router.extend({
 
   routes: {
-    ""              : "showHome",   // Initial View
-    "tracks/:genre" : "loadGenre",  //TracksCollectionView
-    /*"favorites"     : "showFavorites"*/
+    ""                      : "showHome",   // Initial View
+    "tracks/:genre"         : "loadGenre",  //TracksCollectionView
+    "tracks/:favorites"     : "showFavorites"
   },
 
   initialize: function() {
@@ -21,10 +21,10 @@ var Router = Backbone.Router.extend({
    
  
     $("header").append(this.nav.render().el);
-    $(".wrapper").append(this.initialView.render().el);
 
     //listens for click on initial view
     this.listenTo(this.initialView, "link:click", function(genre){ 
+      console.log('click in initial view');
       this.loadGenre(genre);
       this.navigate("tracks/" + genre);
       this.showTracksView();
@@ -52,9 +52,6 @@ var Router = Backbone.Router.extend({
       this.navigate(options.href);
     });
 
-    // default to showing home
-    //this.showHome(); //this makes the navigate on tracks not work
-
   },
 
     // grabs tracks associated with a genre
@@ -64,15 +61,19 @@ var Router = Backbone.Router.extend({
     // detaches current view and creates new view for tracksView
     showTracksView: function(){ 
       if(this.currentView){     // checks for currentView
-        this.currentView.el.detach(); //detaches what it finds
+        this.currentView.$el.detach(); //detaches what it finds
       }
       this.currentView = this.tracksView; //adds in our new view
       $(".wrapper").html(this.currentView.el);
     },
     //shows the home page
     showHome: function() {
-      this.$(".wrapper").html( this.initialView.render().el );
-    },
+      if(this.currentView){     // checks for currentView
+          this.currentView.$el.detach(); //detaches what it finds
+      }
+      this.currentView = this.initialView; //adds in our new view
+      $(".wrapper").html(this.currentView.el);
+    }
     // grabs id of favorited tracks, adds to favorites
     // loadFavs: function(id) {
     //   this.favTracks.loadFavs(id);

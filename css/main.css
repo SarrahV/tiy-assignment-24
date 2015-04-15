@@ -175,6 +175,12 @@ header .container-1 input#search:-ms-input-placeholder {
 .tracks .track-box .play .fa-play-circle {
   font-size: 4em;
 }
+.tracks .track-box .play .fa-star {
+  font-size: 4em;
+}
+.tracks .track-box .play .fa-pause {
+  font-size: 4em;
+}
 .tracks .track-box .genre {
   font-size: 1em;
 }

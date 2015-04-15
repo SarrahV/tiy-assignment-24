@@ -30,7 +30,7 @@ this["JST"]["track"] = Handlebars.template({"1":function(depth0,helpers,partials
     + alias3(((helper = (helper = helpers.duration || (depth0 != null ? depth0.duration : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"duration","hash":{},"data":data}) : helper)))
     + "</span></h2>\n    <div class=\"favs\">\n      <a href=\"#\" data-id="
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"id","hash":{},"data":data}) : helper)))
-    + "><i class=\"fa fa-star\"></i></a>\n    </div>\n    <div class=\"play\">\n"
+    + "><i class=\"fa fa-star-o\"></i></a>\n    </div>\n    <div class=\"play\">\n"
     + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.streamable : depth0),{"name":"if","hash":{},"fn":this.program(1, data, 0),"inverse":this.program(3, data, 0),"data":data})) != null ? stack1 : "")
     + "    </div>\n  </div>\n\n";
 },"useData":true});
