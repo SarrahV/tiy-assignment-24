@@ -1,9 +1,9 @@
 var Router = Backbone.Router.extend({
 
   routes: {
-    ""                      : "showHome",        // Initial View
+    ""                       : "showHome",       // Initial View
     "tracks/:genre"         : "loadGenre",      //TracksCollectionView
-    "tracks/:title"         : "showFavorites"   //Fav TracksCollectionView
+    "favorites"             : "showFavorites"   //Fav TracksCollectionView
   },
 
   initialize: function() {
@@ -16,49 +16,43 @@ var Router = Backbone.Router.extend({
       collection: this.tracks
     });
 
-    this.favTracks = new FireCollection();      // firebase tracks
+    this.favTracks = this.tracks.favorites;     // firebase tracks
     this.favoritesView = new FavoritesView({    // view of firebase Collec.
       collection: this.favTracks
     });
 
     this.currentView = null;                    // allows me to detect a view and detach it
    
- 
     $("header").append(this.nav.render().el);
 
     //listens for click on initial view
     this.listenTo(this.initialView, "link:click", function(genre){ 
-
       this.loadGenre(genre);
-      console.log(this);
       this.navigate("tracks/" + genre);
       this.showTracksView();
     });
 
-     //listens for click on Fav view
-    this.listenTo(this.nav, "link:click", function(title){ 
-     
-      this.showFavorites(title);
-      console.log(this);
-      this.navigate("tracks/" + title);
-      //this.showFavorites();
-    });
+    //  //listens for click on Fav view
+    // this.listenTo(this.nav, "link:click", function(title){ 
 
+    //   this.showFavorites();
+    //   console.log(this);
+    //   this.navigate("favorites");
+    //   //this.showFavorites();
+    // });
 
     //listens to navigation to show pages
     this.listenTo(this.nav, "link:click", function(options){
+      console.log(options);
       switch(options.name) {
-        case "favorites":
+        case "favs":
           this.showFavorites();
-        break;
-        case "home":
-          this.showHome();
         break;
         default:
           this.showHome();
         break;
       }
-      this.navigate(options.href);
+      this.navigate(options.href, {trigger: true, replace: true});
     });
 
   },
@@ -84,15 +78,13 @@ var Router = Backbone.Router.extend({
       $(".wrapper").html(this.currentView.el);
     },
 
-    showFavorites: function(title) {
-      if(this.currentView){     // checks for currentView
+    showFavorites: function() {
+      if(this.currentView) {     // checks for currentView
           this.currentView.$el.detach(); //detaches what it finds
       }
       this.currentView = this.favoritesView; //adds in our new view
       $(".wrapper").html(this.currentView.el);
     }
-
-
 });
 
 

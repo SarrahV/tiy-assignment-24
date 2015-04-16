@@ -323,27 +323,28 @@ var FavTrackView = Backbone.View.extend({  // ind track view
 
 
 var FavoritesView = Backbone.View.extend({
-
   className: "track-list",
-
   template: JST["favorites"],
 
   initialize: function() { // listen for changes to the view (add track)
-    this.listenTo(this.collection, "change", function() {
+    this.listenTo(this.collection, "sync", function() {
       this.render();
     });
+
+    // this.render();
   },
 
   render: function() {
+    console.log("render", this);
     this.$el.html( this.template() );
     $div = this.$("div");
+    console.log("this.collection", this.collection);
     this.collection.each(function(model) {
-      var view = new FavoritesView({model: model});
+      var view = new FavTrackView({model: model});
       $div.append(view.render().el);
     });
     return this;
   }
-
 });
 
 

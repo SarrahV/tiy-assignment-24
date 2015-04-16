@@ -66,6 +66,7 @@ var TrackCollection = Backbone.Collection.extend({
 var FireCollection = Backbone.Firebase.Collection.extend({
   url: "https://playlist-soundzzzz.firebaseio.com",
   model: Track,
+  autoSync: true,
 
   loadFavs: function(genre) {
     SC.get('/tracks', { id: id }, function(tracks) {
